@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+
+{% block section %}
+ <h2>Usuarios</h2>
+ <h2>hola2</h2>
+ <hr>
+{% endblock section %}
+
+{% block content %}
+<div class="card-deck">
+   
+ </div>
+
+ <link rel="stylesheet" type="text/css" href="{% static 'stylespc.css' %}">
+
+ <form method="post" action="{% url 'armar-pc' %}">
+   {% csrf_token %}
+   
+   <label for="procesador">Selecciona un procesador:</label>
+   <select name="procesador" id="procesador">
+     {% for procesador in procesadores %}
+       <option value="{{ procesador.id_cpu }}">{{ procesador.nombre }}</option>
+     {% endfor %}
+   </select>
+ 
+   <label for="tarjeta_madre">Selecciona una tarjeta madre:</label>
+   <select name="tarjeta_madre" id="tarjeta_madre">
+     {% for tarjeta_madre in tarjetas_madre %}
+       <option value="{{ tarjeta_madre.id_mom }}">{{ tarjeta_madre.nombre }}</option>
+     {% endfor %}
+   </select>
+ 
+   <label for="memoria_ram">Selecciona una memoria RAM:</label>
+   <select name="memoria_ram" id="memoria_ram">
+     {% for memoria_ram in memorias_ram %}
+       <option value="{{ memoria_ram.id_ram }}">{{ memoria_ram.nombre }}</option>
+     {% endfor %}
+   </select>
+ 
+   <input type="submit" value="Armar PC">
+ </form>
+
+ 
+{% endblock  %}
+
+
+
