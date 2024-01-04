@@ -2,20 +2,16 @@
 {% load static %}
 
 
-
-
-{% block section %}
- <h2>Usuarios</h2>
- <h2>hola2</h2>
- <hr>
-{% endblock section %}
-
 {% block content %}
+
+
+
+
 <div class="card-deck">
    
  </div>
 
- <link rel="stylesheet" type="text/css" href="{% static 'stylespc.css' %}">
+ <link rel="stylesheet" type="text/css" href="{% static 'css/stylepc.css' %}">
 
  <form method="post" action="{% url 'armar-pc' %}">
    {% csrf_token %}
@@ -44,7 +40,8 @@
    <input type="submit" value="Armar PC">
  </form>
 
- 
+
+
 {% endblock  %}
 
 
