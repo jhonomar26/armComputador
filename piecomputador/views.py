@@ -29,6 +29,7 @@ class ComponentsListView(ListView):
         context['procesadores'] = Procesador.objects.all()
         context['tarjetas_madre'] = TarjetaMadre.objects.all()
         context['memorias_ram'] = Memoria.objects.all()
+        context['tarjetas_graficas'] = Grafica.objects.all()
         return context
 
 #Armar pc

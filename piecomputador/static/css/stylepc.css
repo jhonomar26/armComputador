@@ -35,3 +35,14 @@ input[type="submit"] {
 input[type="submit"]:hover {
     background-color: #45a049;
 }
+
+
+.form-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.form-wrapper,
+.additional-form {
+  width: 48%; /* Ajusta según tus necesidades */
+}

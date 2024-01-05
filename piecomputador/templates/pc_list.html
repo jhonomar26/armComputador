@@ -1,48 +1,93 @@
 {% extends 'base.html' %}
 {% load static %}
 
-
 {% block content %}
+  <div class="form-container">
+    <h2 class="common-title" style="text-align: center;">
+      <div style="display: flex; align-items: center; justify-content: center;">
+          <img src="{% static 'images/cpu2.webp' %}" width="100px" height="120px" alt="Imagen" class="title-image">
+          Componentes
+      </div>
+  </h2>
+    <!-- Formulario actual -->
+    <div class="form-wrapper">
+      <form method="post" action="{% url 'armar-pc' %}">
+        {% csrf_token %}
+        <label for="tarjeta_madre" style="font-family:'Brush Script MT', cursive; font-size: 30px;">Tarjeta madre</label>
+        <select name="tarjeta_madre" id="tarjeta_madre" required>
+          <option value="" disabled selected>Selecciona una tarjeta madre</option>
+          {% for tarjeta_madre in tarjetas_madre %}
+            <option value="{{ tarjeta_madre.id_mom }}">{{ tarjeta_madre.nombre }}</option>
+          {% endfor %}
+        </select>
 
+        <label for="procesador" style="font-family:'Brush Script MT', cursive; font-size: 30px;">Procesador</label>
+        <select name="procesador" id="procesador">
+          <option value="" selected>Ningún procesador</option>
+          {% for procesador in procesadores %}
+            <option value="{{ procesador.id_cpu }}">{{ procesador.nombre }}</option>
+          {% endfor %}
+        </select>
 
+        <label for="memoria_ram" style="font-family:'Brush Script MT', cursive; font-size: 30px;">Memoria RAM</label>
+        <select name="memoria_ram" id="memoria_ram">
+          <option value="" selected>Ninguna memoria RAM</option>
+          {% for memoria_ram in memorias_ram %}
+            <option value="{{ memoria_ram.id_ram }}">{{ memoria_ram.nombre }}</option>
+          {% endfor %}
+        </select>
 
+        <label for="tarjeta_grafica" style="font-family: 'Brush Script MT', cursive; font-size: 30px;">Tarjeta Grafica</label>
+        <select name="tarjeta_grafica" id="tarjeta_grafica">
+          <option value="" selected>Ninguna tarjeta gráfica</option>
+          {% for tarjeta_grafica in tarjetas_graficas %}
+            <option value="{{ tarjeta_grafica.id_gpu }}">{{ tarjeta_grafica.nombre }}</option>
+          {% endfor %}
+        </select>
 
-<div class="card-deck">
-   
- </div>
+        <!-- <input type="submit" value="Armar PC"> -->
+      </form>
+    </div>
 
- <link rel="stylesheet" type="text/css" href="{% static 'css/stylepc.css' %}">
+    <!-- Nuevo formulario al lado izquierdo -->
+    <div class="additional-form">
+      <form method="post" >
+        {% csrf_token %}
+        <label style="font-family:'Brush Script MT', cursive; font-size: 30px;" for="precio">Precio:</label>
+        <input type="text" name="precio" id="precio" value="0,0 $" required style="width: 380px; height: 20px; text-align: center;">
 
- <form method="post" action="{% url 'armar-pc' %}">
-   {% csrf_token %}
-   
-   <label for="procesador">Selecciona un procesador:</label>
-   <select name="procesador" id="procesador">
-     {% for procesador in procesadores %}
-       <option value="{{ procesador.id_cpu }}">{{ procesador.nombre }}</option>
-     {% endfor %}
-   </select>
- 
-   <label for="tarjeta_madre">Selecciona una tarjeta madre:</label>
-   <select name="tarjeta_madre" id="tarjeta_madre">
-     {% for tarjeta_madre in tarjetas_madre %}
-       <option value="{{ tarjeta_madre.id_mom }}">{{ tarjeta_madre.nombre }}</option>
-     {% endfor %}
-   </select>
- 
-   <label for="memoria_ram">Selecciona una memoria RAM:</label>
-   <select name="memoria_ram" id="memoria_ram">
-     {% for memoria_ram in memorias_ram %}
-       <option value="{{ memoria_ram.id_ram }}">{{ memoria_ram.nombre }}</option>
-     {% endfor %}
-   </select>
- 
-   <input type="submit" value="Armar PC">
- </form>
+        <label style="font-family:'Brush Script MT', cursive; font-size: 30px;" for="gama">Gama:</label>
+        <input type="text" name="gama" id="gama" value="Medium"  readonly style="width: 380px; height: 20px; text-align: center;">
 
+        <label style="font-family:'Brush Script MT', cursive; font-size: 30px;" for="total">Total:</label>
+        <input type="text" name="total" id="total" value="0,0 $" readonly style="width: 380px; height: 20px; text-align: center;">
+        <br>
+        <br>
+        <input type="submit" value="Guardar">
+      </form>
+    </div>
+  </div>
 
+  <link rel="stylesheet" type="text/css" href="{% static 'css/stylepc.css' %}">
+  <style>
+    .form-container {
+      text-align: center;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
 
-{% endblock  %}
+    .common-title {
+      width: 100%;
+      text-align: center;
+      margin-bottom: 20px;
+    }
 
-
-
+    .form-wrapper,
+    .additional-form {
+      width: 48%; /* Ajusta según tus necesidades */
+      text-align: left;
+      margin-bottom: 20px;
+    }
+  </style>
+{% endblock %}
