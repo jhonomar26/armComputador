@@ -15,8 +15,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
 from piecomputador import views
+from django.urls import path, include
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -25,4 +26,11 @@ urlpatterns = [
     path("tasks/", views.tasks, name="tasks"),
     path("logout/", views.signout, name="logout"),
     path("signin/", views.signin, name="signin"),
+
+    #armar
+    path("pc/", views.ComponentsListView.as_view(), name="pc-list"),
+    #path('user/<int:pk>/', views.UserDetailView.as_view(), name='user-detail'),
+    #path('armar-pc/', views.armar_pc, name='armar-pc'),
+    #path('pc/<int:pk>/', views.PCDetailView.as_view(), name='detalle-pc'),
+    path('armar-pc/', views.ArmarPCView.as_view(), name='armar-pc'),
 ]
