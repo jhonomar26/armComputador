@@ -170,20 +170,24 @@ def signin(request):
 
 
 # vista que recibe el precio del formulario para implementar la logica del armado
+
+
 def armar_pc(request):
-    precio_guardado = None
+    gama_value = "baja"
 
     try:
         if request.method == "POST":
-            precio = request.POST.get("precio")
+            precio = request.POST.get("precio_form")
+            print(precio)
             # Lógica adicional y procesamiento aquí
+            # if '1' < precio < '5':
+            if precio == '5':
+                gama_value = 'Baja'
+            # Reemplaza con el valor que desees asignar
 
-            # Ejemplo: Simular un error
-            # raise ValueError("¡Este es un error de ejemplo!")
-
-            precio_guardado = precio
+            # Resto de la lógica...
 
     except Exception as e:
         print(f"Error en la vista armar_pc: {e}")
 
-    return render(request, "pc_list.html", {"precio_guardado": precio_guardado})
+    return render(request, "pc_list.html", {"gama_value": gama_value})
