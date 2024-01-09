@@ -8,33 +8,48 @@ from django.contrib.auth import login, logout, authenticate
 from django.db import IntegrityError
 from .models import *
 from .forms import *
-from django.urls import reverse_lazy 
-from django.views.generic import View 
-from django.views.generic import CreateView, DeleteView, UpdateView, ListView, DetailView
-from piecomputador.models import Procesador, TarjetaMadre, Grafica, Memoria, Usuario_PC, PC ,Usuarios
+from django.urls import reverse_lazy
+from django.views.generic import View
+from django.views.generic import (
+    CreateView,
+    DeleteView,
+    UpdateView,
+    ListView,
+    DetailView,
+)
+from piecomputador.models import (
+    Procesador,
+    TarjetaMadre,
+    Grafica,
+    Memoria,
+    Usuario_PC,
+    PC,
+    Usuarios,
+)
 from rest_framework import viewsets
-
 
 
 def home(request):
     return render(request, "home.html")
 
-#componentes
+
+# componentes
 class ComponentsListView(ListView):
     model = PC
-    template_name = 'pc_list.html'
+    template_name = "pc_list.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['procesadores'] = Procesador.objects.all()
-        context['tarjetas_madre'] = TarjetaMadre.objects.all()
-        context['memorias_ram'] = Memoria.objects.all()
-        context['tarjetas_graficas'] = Grafica.objects.all()
+        context["procesadores"] = Procesador.objects.all()
+        context["tarjetas_madre"] = TarjetaMadre.objects.all()
+        context["memorias_ram"] = Memoria.objects.all()
+        context["tarjetas_graficas"] = Grafica.objects.all()
         return context
 
-#Armar pc
+
+# # Armar pc
 # class ArmarPCView(View):
-#     template_name = 'armar_pc.html'  # Crea un nuevo template si es necesario
+#     template_name = "armar_pc.html"  # Crea un nuevo template si es necesario
 
 #     def get(self, request, *args, **kwargs):
 #         # Lógica para manejar la solicitud GET (si es necesario)
@@ -42,32 +57,35 @@ class ComponentsListView(ListView):
 
 #     def post(self, request, *args, **kwargs):
 #         # Lógica para manejar la solicitud POST y armar el PC con los componentes seleccionados
-#         procesador_id = request.POST.get('procesador')
-#         tarjeta_madre_id = request.POST.get('tarjeta_madre')
-#         memoria_ram_id = request.POST.get('memoria_ram')
+#         procesador_id = request.POST.get("procesador")
+#         tarjeta_madre_id = request.POST.get("tarjeta_madre")
+#         memoria_ram_id = request.POST.get("memoria_ram")
 
 #         # Realiza la lógica para armar el PC utilizando los IDs de los componentes
 #         # ...
 
 #         pc_nuevo = PC.objects.create(
-#             id_armado=11,  # Cambiar por la lógica adecuada
+#             id_armado=100,  # Cambiar por la lógica adecuada
 #             nombre_armado="armado1",  # Cambiar por la lógica adecuada
 #             id_procesador_id=procesador_id,
 #             id_tarjeta_madre_id=tarjeta_madre_id,
 #             id_memoria_ram_id=memoria_ram_id,
-#             #id_tarjeta_grafica_id=122,  # Cambiar por la lógica adecuada
+#             # id_tarjeta_grafica_id=122,  # Cambiar por la lógica adecuada
 #             # Completa con otros campos y valores necesarios
 #         )
 
 #         # Redirige a la página de detalles del PC recién armado o a donde desees
-#         return redirect('detalle-pc', pk=pc_nuevo.id)  # Asegúrate de tener una URL y vista para ver los detalles de un PC
-
+#         return redirect(
+#             "detalle-pc", pk=pc_nuevo.id_armado
+#         )  # Asegúrate de tener una URL y vista para ver los detalles de un PC
 
 #         # Redirige a la página de detalles del PC recién armado o a donde desees
 
-class PCDetailView(DetailView):
-    model = PC
-    template_name = 'pc_detail.html'
+
+# class PCDetailView(DetailView):
+#     model = PC
+#     template_name = "pc_detail.html"
+
 
 def signup(request):
     if request.method == "POST":
@@ -136,7 +154,7 @@ def signin(request):
                 user = authenticate(request, username=username, password=password)
                 if user is not None:
                     login(request, user)
-                    return redirect("pc-list")
+                    return redirect("armar_pc")
             except Usuarios.DoesNotExist:
                 return render(
                     request,
@@ -148,26 +166,24 @@ def signin(request):
                 )
     else:
         form = CustomInicioSesionForm()
-
     return render(request, "signin.html", {"form": form})
 
 
+# vista que recibe el precio del formulario para implementar la logica del armado
+def armar_pc(request):
+    precio_guardado = None
 
-# vista que recibe el precio del formulario para implementar la logica del armado 
-# def armar_pc(request):
-#     precio_guardado = None
-
-#     if request.method == 'POST':
-#         precio = request.POST.get('precio')
-
-#         try:
-#             # Lógica adicional y procesamiento aquí
+    try:
+        if request.method == "POST":
+            precio = request.POST.get("precio")
+            # Lógica adicional y procesamiento aquí
 
 #             # Ejemplo: Simular un error
 #             # raise ValueError("¡Este es un error de ejemplo!")
 
-#             precio_guardado = precio
-#         except Exception as e:
-#             print(f"Error en la vista armar_pc: {e}")
+            precio_guardado = precio
 
-#     return render(request, 'pc_list.html', {'precio_guardado': precio_guardado})
+    except Exception as e:
+        print(f"Error en la vista armar_pc: {e}")
+
+    return render(request, "pc_list.html", {"precio_guardado": precio_guardado})

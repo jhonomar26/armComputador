@@ -2,5 +2,121 @@
 {% load static %}
 
 {% block content %}
+  <div class="form-container">
+    <h2 class="common-title" style="text-align: center;">
+      <div style="display: flex; align-items: center; justify-content: center;">
+        <img src="{% static 'images/cpu2.webp' %}" width="100px" height="120px" alt="Imagen" class="title-image" />
+        Componentes
+      </div>
+    </h2>
+    {% comment %} <!-- Formulario uno -->
+    <div class="form-wrapper">
+      <form id="components-form" method="post" action="{% url 'armar-pc' %}">
+        {% csrf_token %}
 
+        <label for="tarjeta_madre" style="font-family:'Brush Script MT', cursive; font-size: 30px;">Tarjeta madre</label>
+        <select name="tarjeta_madre" id="tarjeta_madre" required>
+          <option value="" disabled selected>Selecciona una tarjeta madre</option>
+          {% for tarjeta_madre in tarjetas_madre %}
+            <option value="{{ tarjeta_madre.id_mom }}">{{ tarjeta_madre.nombre }}</option>
+          {% endfor %}
+        </select>
+
+        <label for="procesador" style="font-family:'Brush Script MT', cursive; font-size: 30px;">Procesador</label>
+        <select name="procesador" id="procesador">
+          <option value="" selected>Ningún procesador</option>
+          {% for procesador in procesadores %}
+            <option value="{{ procesador.id_cpu }}">{{ procesador.nombre }}</option>
+          {% endfor %}
+        </select>
+
+        <label for="memoria_ram" style="font-family:'Brush Script MT', cursive; font-size: 30px;">Memoria RAM</label>
+        <select name="memoria_ram" id="memoria_ram">
+          <option value="" selected>Ninguna memoria RAM</option>
+          {% for memoria_ram in memorias_ram %}
+            <option value="{{ memoria_ram.id_ram }}">{{ memoria_ram.nombre }}</option>
+          {% endfor %}
+        </select>
+
+        <label for="tarjeta_grafica" style="font-family: 'Brush Script MT', cursive; font-size: 30px;">Tarjeta Grafica</label>
+        <select name="tarjeta_grafica" id="tarjeta_grafica">
+          <option value="" selected>Ninguna tarjeta gráfica</option>
+          {% for tarjeta_grafica in tarjetas_graficas %}
+            <option value="{{ tarjeta_grafica.id_gpu }}">{{ tarjeta_grafica.nombre }}</option>
+          {% endfor %}
+        </select>
+
+        <!-- Agrega otros campos según sea necesario -->
+      </form>
+    </div> {% endcomment %}
+
+    <!-- Segundo formulario -->
+    <div class="additional-form">
+      <form id="additional-form" method="post" action="{% url 'armar_pc' %}" onsubmit="return handleFormSubmit()">
+        {% csrf_token %}
+
+        <label style="font-family:'Brush Script MT', cursive; font-size: 30px;" for="precio_form">Precio:</label>
+        <input type="text" name="precio_form" id="precio_form" value="0" required pattern="\d+" title="Ingrese un número entero" style="width: 380px; height: 20px; text-align: center;" onclick="borrarContenido('precio_form')" />
+        <label style="font-family:'Brush Script MT', cursive; font-size: 30px;" for="gama">Gama:</label>
+        <input type="text" name="gama" id="gama" value="Medium" readonly style="width: 380px; height: 20px; text-align: center;" />
+        <label style="font-family:'Brush Script MT', cursive; font-size: 30px;" for="total">Total:</label>
+        <input type="text" name="total" id="total" value="0,0 $" readonly style="width: 380px; height: 20px; text-align: center;" />
+        <br />
+        <br />
+        <!-- <button type="button" id="submit-button">Guardar</button> -->
+        <input type="submit" value="Guardar" />
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function handleFormSubmit() {
+      // Borrar contenido del campo precio_form
+      borrarContenido('precio_form')
+    
+      // Retornar true para permitir que el formulario se envíe
+      return true
+    }
+    
+    function borrarContenido(idCampo) {
+      document.getElementById(idCampo).value = ''
+    }
+  </script>
+
+  <link rel="stylesheet" type="text/css" href="{% static 'css/stylepc.css' %}" />
+
+  <!-- jQuery y script para manejar la solicitud AJAX -->
+ 
+
+ 
+
+  {% if precio_guardado %}
+    <div>
+      <p>Valor de la variable guardada: {{ precio_guardado }}</p>
+      <!-- Puedes agregar más contenido con la información procesada aquí -->
+    </div>
+  {% endif %}
+
+  <style>
+    .form-container {
+      text-align: center;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .common-title {
+      width: 100%;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .form-wrapper,
+    .additional-form {
+      width: 48%; /* Ajusta según tus necesidades */
+      text-align: left;
+      margin-bottom: 20px;
+    }
+  </style>
+  {{ precio_guardado }}
 {% endblock %}
