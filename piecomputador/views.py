@@ -51,7 +51,7 @@ class ArmarPCView(View):
        
 
         pc_nuevo = PC.objects.create(
-            id_armado=11111,  # Cambiar por la lógica adecuada
+            id_armado=1111122,  # Cambiar por la lógica adecuada
             nombre_armado="armado1",  # Cambiar por la lógica adecuada
             id_procesador_id=procesador_id,
             id_tarjeta_madre_id=tarjeta_madre_id,
@@ -151,3 +151,24 @@ def signin(request):
         form = CustomInicioSesionForm()
 
     return render(request, "signin.html", {"form": form})
+
+
+
+# vista que recibe el precio del formulario para implementar la logica del armado 
+def armar_pc(request):
+    precio_guardado = None
+
+    if request.method == 'POST':
+        precio = request.POST.get('precio')
+
+        try:
+            # Lógica adicional y procesamiento aquí
+
+            # Ejemplo: Simular un error
+            # raise ValueError("¡Este es un error de ejemplo!")
+
+            precio_guardado = precio
+        except Exception as e:
+            print(f"Error en la vista armar_pc: {e}")
+
+    return render(request, 'pc_list.html', {'precio_guardado': precio_guardado})
