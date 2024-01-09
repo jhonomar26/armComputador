@@ -177,16 +177,18 @@ def armar_pc(request):
 
     try:
         if request.method == "POST":
+            #! PROBLEMA: CADENA LIST
             precio = request.POST.get("precio_form")
+            precio_numerico = float(precio)
+
             print(precio)
             # Lógica adicional y procesamiento aquí
             # if '1' < precio < '5':
-            if precio == '5':
+            if precio == '':
                 gama_value = 'Baja'
             # Reemplaza con el valor que desees asignar
 
-            # Resto de la lógica...
-
+            # Resto de la lógica.
     except Exception as e:
         print(f"Error en la vista armar_pc: {e}")
 
