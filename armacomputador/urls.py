@@ -28,9 +28,9 @@ urlpatterns = [
     path("signin/", views.signin, name="signin"),
     #armar
     path("pc/", views.ComponentsListView.as_view(), name="pc-list"),
-    path("armar_pc/", views.armar_pc, name="armar_pc"),
+    #path("armar_pc/", views.armar_pc, name="armar_pc"),
     #path('user/<int:pk>/', views.UserDetailView.as_view(), name='user-detail'),
     #path('armar-pc/', views.armar_pc, name='armar-pc'),
     #path('pc/<int:pk>/', views.PCDetailView.as_view(), name='detalle-pc'),
-    path('armar-pc/', views.ArmarPCView.as_view(), name='armar-pc'),
+    #path('armar-pc/', views.ArmarPCView.as_view(), name='armar-pc'),
 ]

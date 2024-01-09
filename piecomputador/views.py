@@ -33,37 +33,37 @@ class ComponentsListView(ListView):
         return context
 
 #Armar pc
-class ArmarPCView(View):
-    template_name = 'armar_pc.html'  # Crea un nuevo template si es necesario
+# class ArmarPCView(View):
+#     template_name = 'armar_pc.html'  # Crea un nuevo template si es necesario
 
-    def get(self, request, *args, **kwargs):
-        # Lógica para manejar la solicitud GET (si es necesario)
-        return render(request, self.template_name)
+#     def get(self, request, *args, **kwargs):
+#         # Lógica para manejar la solicitud GET (si es necesario)
+#         return render(request, self.template_name)
 
-    def post(self, request, *args, **kwargs):
-        # Lógica para manejar la solicitud POST y armar el PC con los componentes seleccionados
-        procesador_id = request.POST.get('procesador')
-        tarjeta_madre_id = request.POST.get('tarjeta_madre')
-        memoria_ram_id = request.POST.get('memoria_ram')
+#     def post(self, request, *args, **kwargs):
+#         # Lógica para manejar la solicitud POST y armar el PC con los componentes seleccionados
+#         procesador_id = request.POST.get('procesador')
+#         tarjeta_madre_id = request.POST.get('tarjeta_madre')
+#         memoria_ram_id = request.POST.get('memoria_ram')
 
-        # Realiza la lógica para armar el PC utilizando los IDs de los componentes
-        # ...
+#         # Realiza la lógica para armar el PC utilizando los IDs de los componentes
+#         # ...
 
-        pc_nuevo = PC.objects.create(
-            id_armado=1111122,  # Cambiar por la lógica adecuada
-            nombre_armado="armado1",  # Cambiar por la lógica adecuada
-            id_procesador_id=procesador_id,
-            id_tarjeta_madre_id=tarjeta_madre_id,
-            id_memoria_ram_id=memoria_ram_id,
-            #id_tarjeta_grafica_id=122,  # Cambiar por la lógica adecuada
-            # Completa con otros campos y valores necesarios
-        )
+#         pc_nuevo = PC.objects.create(
+#             id_armado=11,  # Cambiar por la lógica adecuada
+#             nombre_armado="armado1",  # Cambiar por la lógica adecuada
+#             id_procesador_id=procesador_id,
+#             id_tarjeta_madre_id=tarjeta_madre_id,
+#             id_memoria_ram_id=memoria_ram_id,
+#             #id_tarjeta_grafica_id=122,  # Cambiar por la lógica adecuada
+#             # Completa con otros campos y valores necesarios
+#         )
 
-        # Redirige a la página de detalles del PC recién armado o a donde desees
-        return redirect('detalle-pc', pk=pc_nuevo.id)  # Asegúrate de tener una URL y vista para ver los detalles de un PC
+#         # Redirige a la página de detalles del PC recién armado o a donde desees
+#         return redirect('detalle-pc', pk=pc_nuevo.id)  # Asegúrate de tener una URL y vista para ver los detalles de un PC
 
 
-        # Redirige a la página de detalles del PC recién armado o a donde desees
+#         # Redirige a la página de detalles del PC recién armado o a donde desees
 
 class PCDetailView(DetailView):
     model = PC
@@ -154,20 +154,20 @@ def signin(request):
 
 
 # vista que recibe el precio del formulario para implementar la logica del armado 
-def armar_pc(request):
-    precio_guardado = None
+# def armar_pc(request):
+#     precio_guardado = None
 
-    if request.method == 'POST':
-        precio = request.POST.get('precio')
+#     if request.method == 'POST':
+#         precio = request.POST.get('precio')
 
-        try:
-            # Lógica adicional y procesamiento aquí
+#         try:
+#             # Lógica adicional y procesamiento aquí
 
-            # Ejemplo: Simular un error
-            # raise ValueError("¡Este es un error de ejemplo!")
+#             # Ejemplo: Simular un error
+#             # raise ValueError("¡Este es un error de ejemplo!")
 
-            precio_guardado = precio
-        except Exception as e:
-            print(f"Error en la vista armar_pc: {e}")
+#             precio_guardado = precio
+#         except Exception as e:
+#             print(f"Error en la vista armar_pc: {e}")
 
-    return render(request, 'pc_list.html', {'precio_guardado': precio_guardado})
+#     return render(request, 'pc_list.html', {'precio_guardado': precio_guardado})
