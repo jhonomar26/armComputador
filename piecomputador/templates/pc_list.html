@@ -56,9 +56,12 @@
         {% csrf_token %}
 
         <label style="font-family:'Brush Script MT', cursive; font-size: 30px;" for="precio_form">Precio:</label>
-        <input type="text" name="precio_form" id="precio_form" value="0" required pattern="\d+" title="Ingrese un número entero" style="width: 380px; height: 20px; text-align: center;" onclick="borrarContenido('precio_form')" />
+        <input type="number" name="precio_form" id="precio_form"   title="Ingrese un número entero" style="width: 380px; height: 20px; text-align: center;" onclick="borrarContenido('precio_form')" value='5'>
         <label style="font-family:'Brush Script MT', cursive; font-size: 30px;" for="gama">Gama:</label>
-        <input type="text" name="gama" id="gama" value="Medium" readonly style="width: 380px; height: 20px; text-align: center;" />
+    
+        
+        <input type="text" name="gama" id="gama" value="{{ gama_value }}" readonly style="width: 380px; height: 20px; text-align: center;" />
+        {{gama_value}}
         <label style="font-family:'Brush Script MT', cursive; font-size: 30px;" for="total">Total:</label>
         <input type="text" name="total" id="total" value="0,0 $" readonly style="width: 380px; height: 20px; text-align: center;" />
         <br />
@@ -87,16 +90,6 @@
 
   <!-- jQuery y script para manejar la solicitud AJAX -->
  
-
- 
-
-  {% if precio_guardado %}
-    <div>
-      <p>Valor de la variable guardada: {{ precio_guardado }}</p>
-      <!-- Puedes agregar más contenido con la información procesada aquí -->
-    </div>
-  {% endif %}
-
   <style>
     .form-container {
       text-align: center;
