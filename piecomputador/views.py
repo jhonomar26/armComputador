@@ -48,7 +48,6 @@ class ArmarPCView(View):
 
         # Realiza la lógica para armar el PC utilizando los IDs de los componentes
         # ...
-       
 
         pc_nuevo = PC.objects.create(
             id_armado=11111,  # Cambiar por la lógica adecuada
@@ -137,7 +136,7 @@ def signin(request):
                 user = authenticate(request, username=username, password=password)
                 if user is not None:
                     login(request, user)
-                    return redirect("tasks")
+                    return redirect("pc-list")
             except Usuarios.DoesNotExist:
                 return render(
                     request,
