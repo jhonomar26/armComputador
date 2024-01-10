@@ -172,24 +172,29 @@ def signin(request):
 # vista que recibe el precio del formulario para implementar la logica del armado
 
 
+from django.shortcuts import render
+
 def armar_pc(request):
-    gama_value = "baja"
+    gama_value = "Baja"  # Valor inicial
+    precio_value = "0,0 $"
 
-    try:
-        if request.method == "POST":
-            #! PROBLEMA: CADENA LIST
-            precio = request.POST.get("precio_form")
-            precio_numerico = float(precio)
+    if request.method == "POST":
+        form = PrecioForm(request.POST)
+        if form.is_valid():
+            precio_entero = form.cleaned_data['precio_form']
 
-            print(precio)
-            # Lógica adicional y procesamiento aquí
-            # if '1' < precio < '5':
-            if precio == '':
+            # Lógica para actualizar gama_value
+            if 1 <= precio_entero <= 5:
                 gama_value = 'Baja'
-            # Reemplaza con el valor que desees asignar
+            elif 6 <= precio_entero <= 10:
+                gama_value = 'Media'
+            else:
+                gama_value = 'Alta'
+        else:
+            # El formulario no es válido, puedes manejarlo según tus necesidades
+            print("Formulario no válido")
+    else:
+        form = PrecioForm()
 
-            # Resto de la lógica.
-    except Exception as e:
-        print(f"Error en la vista armar_pc: {e}")
+    return render(request, "pc_list.html", {"gama_value": gama_value, "precio_value": precio_value,"form": form})
 
-    return render(request, "pc_list.html", {"gama_value": gama_value})

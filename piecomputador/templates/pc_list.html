@@ -54,43 +54,74 @@
     <div class="additional-form">
       <form id="additional-form" method="post" action="{% url 'armar_pc' %}" onsubmit="return handleFormSubmit()">
         {% csrf_token %}
-
         <label style="font-family:'Brush Script MT', cursive; font-size: 30px;" for="precio_form">Precio:</label>
-        <input type="number" name="precio_form" id="precio_form"   title="Ingrese un número entero" style="width: 380px; height: 20px; text-align: center;" onclick="borrarContenido('precio_form')" value='5'>
-        <label style="font-family:'Brush Script MT', cursive; font-size: 30px;" for="gama">Gama:</label>
-    
+        <input type="number" name="precio_form" id="precio_form" title="Ingrese un número entero" style="width: 380px; height: 20px; text-align: center;" onclick="borrarContenido('precio_form')" value='0'>
+  
+
         
-        <input type="text" name="gama" id="gama" value="{{ gama_value }}" readonly style="width: 380px; height: 20px; text-align: center;" />
-        {{gama_value}}
-        <label style="font-family:'Brush Script MT', cursive; font-size: 30px;" for="total">Total:</label>
-        <input type="text" name="total" id="total" value="0,0 $" readonly style="width: 380px; height: 20px; text-align: center;" />
+    
+        <label style="font-family:'Brush Script MT', cursive; font-size: 30px;" for="gama">Gama:</label>
+        <div id="gama-container" class="non-editable-container">{{ gama_value }}</div>
+
+        <label style="font-family:'Brush Script MT', cursive; font-size: 30px;" for="gama">Precio:</label>
+        <div id="precio-container" class="non-editable-container">{{ precio_value }}</div>
+
+        <!-- <label style="font-family:'Brush Script MT', cursive; font-size: 30px;" for="total">Total:</label>
+        <input type="text" name="total" id="total" value="0,0 $" readonly style="width: 380px; height: 20px; text-align: center;" /> -->
         <br />
         <br />
-        <!-- <button type="button" id="submit-button">Guardar</button> -->
         <input type="submit" value="Guardar" />
       </form>
     </div>
+  
   </div>
 
   <script>
-    function handleFormSubmit() {
-      // Borrar contenido del campo precio_form
-      borrarContenido('precio_form')
-    
-      // Retornar true para permitir que el formulario se envíe
-      return true
-    }
-    
     function borrarContenido(idCampo) {
-      document.getElementById(idCampo).value = ''
+      document.getElementById(idCampo).value = '';
     }
   </script>
+
+
+
 
   <link rel="stylesheet" type="text/css" href="{% static 'css/stylepc.css' %}" />
 
   <!-- jQuery y script para manejar la solicitud AJAX -->
  
   <style>
+
+    .non-editable-container {
+      width: 380px;
+      height: 25px;
+      text-align: center;
+      padding: 5px;
+      border: 1px solid rgb(0, 0, 0);
+      box-sizing: border-box;
+      display: inline-block;
+    }
+
+    .editable-container {
+      width: 100%;
+      height: 25px;
+      text-align: center;
+      padding: 5px;
+      border: 1px solid rgb(0, 0, 0);
+      box-sizing: border-box;
+      display: inline-block; /* Permite que el contenedor ajuste su tamaño al contenido */
+      outline: none; /* Elimina el contorno predeterminado cuando está enfocado */
+    }
+
+    .editable-container:hover {
+      border-color: #999; /* Cambia el color del borde al pasar el ratón sobre él */
+    }
+
+    .editable-container:empty:before {
+      content: attr(placeholder);
+      color: #aaa;
+    }
+
+
     .form-container {
       text-align: center;
       display: flex;

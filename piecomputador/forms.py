@@ -26,3 +26,9 @@ class CustomInicioSesionForm(AuthenticationForm):
     class Meta:
         model = Usuarios
         fields = ["username", "password"]
+
+
+
+class PrecioForm(forms.Form):
+    precio_form = forms.IntegerField()
+    
