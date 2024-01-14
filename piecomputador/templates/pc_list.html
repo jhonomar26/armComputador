@@ -3,6 +3,8 @@
 
 {% block content %}
 
+
+
 <form id="complete-form" method="post" action="{% url 'armar_pc' %}" onsubmit="return handleFormSubmit()">
   {% csrf_token %}
 
@@ -44,9 +46,11 @@
             <br />
             <br />
         </div>
-    </div>
 
-  <input type="submit" value="Guardar" class="save-button">
+        <input type="submit" value="Guardar" class="save-button">
+    </div>
+   
+ 
 </form>
 
 
@@ -95,9 +99,16 @@
         display: inline-block;
     }
 
+
     .save-button {
-        margin-top: 20px; /* Ajusta según tus necesidades */
+        margin-top: 20px;
+        width: 100px; /* Ajusta según tus necesidades */
+        height: 30px; /* Ajusta según tus necesidades */
+        position: relative;
+        top: 400px;
+        right: 270px;
     }
+   
 </style>
 {{ precio_guardado }}
 {% endblock %}
