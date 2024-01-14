@@ -6,7 +6,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Django crud aplication</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/estilos.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/estilos.css' %}" />
   </head>
   <body>
     <nav>
@@ -14,14 +14,12 @@
         <li>
           <a href="/">Home</a>
         </li>
-        
-        {% if user.is_authenticated%}
-        <li>
-          <a href="/pc">Armar</a>
-        </li>
+
+        {% if user.is_authenticated %}
+          <li>
+            <a href="/pc">Armar</a>
+          </li>
         {% endif %}
-          
-        
 
         {% if user.is_authenticated %}
           <li>
@@ -41,5 +39,7 @@
     {% block content %}
 
     {% endblock %}
+    <!-- Agrega esto antes de cerrar la etiqueta </body> -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
   </body>
 </html>

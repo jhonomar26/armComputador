@@ -28,12 +28,11 @@ from piecomputador.models import (
     PC,
     Usuarios,
 )
-
+from django.http import JsonResponse
 
 
 def home(request):
     return render(request, "home.html")
-
 
 
 # Inicializar los componenetes
@@ -43,88 +42,178 @@ class ComponentesForm(forms.Form):
     memoria_ram = forms.ChoiceField(choices=[], required=False)
     tarjeta_grafica = forms.ChoiceField(choices=[], required=False)
 
+
 def armar_pc(request):
     gama_value = "Baja"  # Valor inicial
     precio_value = "0,0 $"
+    valor = "Valor"
 
     # Obtener las opciones para los componentes desde la base de datos
-    tarjetas_madre_choices = [(tm.id_mom, tm.nombre) for tm in TarjetaMadre.objects.all()]
-    procesadores_choices = [(proc.id_cpu, proc.nombre) for proc in Procesador.objects.all()]
-    memorias_ram_choices = [(ram.id_ram, ram.nombre) for ram in Memoria.objects.all()]
-    tarjetas_graficas_choices = [(gpu.id_gpu, gpu.nombre) for gpu in Grafica.objects.all()]
+    tarjetas_madre_choices = [
+        (tm.id_mom, f"{tm.nombre} - ${tm.precio}") for tm in TarjetaMadre.objects.all()
+    ]
+    procesadores_choices = [
+        (proc.id_cpu, f"{proc.nombre} - ${proc.precio}")
+        for proc in Procesador.objects.all()
+    ]
+    memorias_ram_choices = [
+        (ram.id_ram, f"{ram.nombre} - ${ram.precio}") for ram in Memoria.objects.all()
+    ]
+    tarjetas_graficas_choices = [
+        (gpu.id_gpu, f"{gpu.nombre} - ${gpu.precio}") for gpu in Grafica.objects.all()
+    ]
 
     if request.method == "POST":
         precio_form = PrecioForm(request.POST)
         componentes_form = ComponentesForm(request.POST)
 
-        if precio_form.is_valid() and componentes_form.is_valid():
-            precio_entero = precio_form.cleaned_data['precio_form']
+        if precio_form.is_valid():
+            precio_entero = precio_form.cleaned_data["precio_form"]
 
             # Lógica para actualizar gama_value
             if 1 <= precio_entero <= 5:
-                gama_value = 'Baja'
+                gama_value = "Baja"
+                # Tarje
+                tarjetas_madre_choices = [
+                    (tm.id_mom, f"{tm.nombre} - {tm.precio}$")
+                    for tm in (TarjetaMadre.objects.filter(gama="Baja"))
+                ]
+                componentes_form.fields[
+                    "tarjeta_madre"
+                ].choices = tarjetas_madre_choices
+
+                # Filtra los procesadores de gama baja
+                procesadores_gama_baja = Procesador.objects.filter(gama="Baja")
+                procesadores_choices = [
+                    (proc.id_cpu, f"{proc.nombre} - {proc.precio}$")
+                    for proc in procesadores_gama_baja
+                ]
+                componentes_form.fields["procesador"].choices = procesadores_choices
+
+                # Filtra las memorias RAM de gama baja
+                memorias_ram_gama_baja = Memoria.objects.filter(gama="Baja")
+                memorias_ram_choices = [
+                    (ram.id_ram, f"{ram.nombre} - {ram.precio}$")
+                    for ram in memorias_ram_gama_baja
+                ]
+                componentes_form.fields["memoria_ram"].choices = memorias_ram_choices
+
+                # Filtra las tarjetas gráficas de gama baja
+                tarjetas_graficas_gama_baja = Grafica.objects.filter(gama="Baja")
+                tarjetas_graficas_choices = [
+                    (gpu.id_gpu, f"{gpu.nombre} - {gpu.precio}$")
+                    for gpu in tarjetas_graficas_gama_baja
+                ]
+                componentes_form.fields[
+                    "tarjeta_grafica"
+                ].choices = tarjetas_graficas_choices
+
             elif 6 <= precio_entero <= 10:
-                gama_value = 'Media'
+                gama_value = "Media"
+                # Tarje
+                tarjetas_madre_choices = [
+                    (tm.id_mom, f"{tm.nombre} - {tm.precio}$")
+                    for tm in (TarjetaMadre.objects.filter(gama="Media"))
+                ]
+                componentes_form.fields[
+                    "tarjeta_madre"
+                ].choices = tarjetas_madre_choices
+
+                # Filtra los procesadores de gama Media
+                procesadores_gama_Media = Procesador.objects.filter(gama="Media")
+                procesadores_choices = [
+                    (proc.id_cpu, f"{proc.nombre} - {proc.precio}$")
+                    for proc in procesadores_gama_Media
+                ]
+                componentes_form.fields["procesador"].choices = procesadores_choices
+
+                # Filtra las memorias RAM de gama Media
+                memorias_ram_gama_Media = Memoria.objects.filter(gama="Media")
+                memorias_ram_choices = [
+                    (ram.id_ram, f"{ram.nombre} - {ram.precio}$")
+                    for ram in memorias_ram_gama_Media
+                ]
+                componentes_form.fields["memoria_ram"].choices = memorias_ram_choices
+
+                # Filtra las tarjetas gráficas de gama Media
+                tarjetas_graficas_gama_Media = Grafica.objects.filter(gama="Media")
+                tarjetas_graficas_choices = [
+                    (gpu.id_gpu, f"{gpu.nombre} - {gpu.precio}$")
+                    for gpu in tarjetas_graficas_gama_Media
+                ]
+                componentes_form.fields[
+                    "tarjeta_grafica"
+                ].choices = tarjetas_graficas_choices
             else:
-                gama_value = 'Alta'
+                gama_value = "Alta"
+                # Tarje
+                tarjetas_madre_choices = [
+                    (tm.id_mom, f"{tm.nombre} - {tm.precio}$")
+                    for tm in (TarjetaMadre.objects.filter(gama="Alta"))
+                ]
+                componentes_form.fields[
+                    "tarjeta_madre"
+                ].choices = tarjetas_madre_choices
+
+                # Filtra los procesadores de gama Alta
+                procesadores_gama_Alta = Procesador.objects.filter(gama="Alta")
+                procesadores_choices = [
+                    (proc.id_cpu, f"{proc.nombre} - {proc.precio}$")
+                    for proc in procesadores_gama_Alta
+                ]
+                componentes_form.fields["procesador"].choices = procesadores_choices
+
+                # Filtra las memorias RAM de gama Alta
+                memorias_ram_gama_Alta = Memoria.objects.filter(gama="Alta")
+                memorias_ram_choices = [
+                    (ram.id_ram, f"{ram.nombre} - {ram.precio}$")
+                    for ram in memorias_ram_gama_Alta
+                ]
+                componentes_form.fields["memoria_ram"].choices = memorias_ram_choices
+
+                # Filtra las tarjetas gráficas de gama Alta
+                tarjetas_graficas_gama_Alta = Grafica.objects.filter(gama="Alta")
+                tarjetas_graficas_choices = [
+                    (gpu.id_gpu, f"{gpu.nombre} - {gpu.precio}$")
+                    for gpu in tarjetas_graficas_gama_Alta
+                ]
+                componentes_form.fields[
+                    "tarjeta_grafica"
+                ].choices = tarjetas_graficas_choices
+
+            # !Miro si cambio algun elemento en el formulario
+            # Verificar si se ha cambiado la tarjeta madre
+            field_name = request.POST.get("field_name")
+            selected_value = request.POST.get("selected_value")
+            if field_name == None:
+                gama_value="NONE"
+                
+            else:
+                gama_value = "Si estoy llegango solicitud pos"
+
         else:
             # El formulario no es válido, puedes manejarlo según tus necesidades
-            print("Formulario no válido")
+            precio_form = PrecioForm()  # Inicializa un nuevo formulario
     else:
         precio_form = PrecioForm()
         componentes_form = ComponentesForm()
 
     # Inicializamos las opciones del formulario
-    componentes_form.fields['tarjeta_madre'].choices = tarjetas_madre_choices
-    componentes_form.fields['procesador'].choices = procesadores_choices
-    componentes_form.fields['memoria_ram'].choices = memorias_ram_choices
-    componentes_form.fields['tarjeta_grafica'].choices = tarjetas_graficas_choices
+    componentes_form.fields["tarjeta_madre"].choices = tarjetas_madre_choices
+    componentes_form.fields["procesador"].choices = procesadores_choices
+    componentes_form.fields["memoria_ram"].choices = memorias_ram_choices
+    componentes_form.fields["tarjeta_grafica"].choices = tarjetas_graficas_choices
 
-    return render(request, "pc_list.html", {
-        "gama_value": gama_value,
-        "precio_value": precio_value,
-        "precio_form": precio_form,
-        "componentes_form": componentes_form,
-    })
-
-# # Armar pc
-# class ArmarPCView(View):
-#     template_name = "armar_pc.html"  # Crea un nuevo template si es necesario
-
-#     def get(self, request, *args, **kwargs):
-#         # Lógica para manejar la solicitud GET (si es necesario)
-#         return render(request, self.template_name)
-
-#     def post(self, request, *args, **kwargs):
-#         # Lógica para manejar la solicitud POST y armar el PC con los componentes seleccionados
-#         procesador_id = request.POST.get("procesador")
-#         tarjeta_madre_id = request.POST.get("tarjeta_madre")
-#         memoria_ram_id = request.POST.get("memoria_ram")
-
-#         # Realiza la lógica para armar el PC utilizando los IDs de los componentes
-#         # ...
-
-#         pc_nuevo = PC.objects.create(
-#             id_armado=100,  # Cambiar por la lógica adecuada
-#             nombre_armado="armado1",  # Cambiar por la lógica adecuada
-#             id_procesador_id=procesador_id,
-#             id_tarjeta_madre_id=tarjeta_madre_id,
-#             id_memoria_ram_id=memoria_ram_id,
-#             # id_tarjeta_grafica_id=122,  # Cambiar por la lógica adecuada
-#             # Completa con otros campos y valores necesarios
-#         )
-
-#         # Redirige a la página de detalles del PC recién armado o a donde desees
-#         return redirect(
-#             "detalle-pc", pk=pc_nuevo.id_armado
-#         )  # Asegúrate de tener una URL y vista para ver los detalles de un PC
-
-#         # Redirige a la página de detalles del PC recién armado o a donde desees
-
-
-# class PCDetailView(DetailView):
-#     model = PC
-#     template_name = "pc_detail.html"
+    return render(
+        request,
+        "pc_list.html",
+        {
+            "gama_value": gama_value,
+            "precio_value": precio_value,
+            "precio_form": precio_form,
+            "componentes_form": componentes_form,
+        },
+    )
 
 
 def signup(request):
@@ -210,8 +299,3 @@ def signin(request):
 
 
 # vista que recibe el precio del formulario para implementar la logica del armado
-
-
-
-
-

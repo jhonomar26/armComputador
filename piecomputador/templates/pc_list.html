@@ -3,6 +3,8 @@
 
 {% block content %}
 
+{{valor}}
+
 <form id="complete-form" method="post" action="{% url 'armar_pc' %}" onsubmit="return handleFormSubmit()">
   {% csrf_token %}
 
@@ -44,10 +46,47 @@
             <br />
             <br />
         </div>
+        <input type="submit" value="Guardar" class="save-button">
     </div>
 
-  <input type="submit" value="Guardar" class="save-button">
 </form>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        // Al cambiar la selección de la tarjeta madre
+        $('#id_tarjeta_madre').change(function() {
+            fieldName = "tarjeta_madre";  // Identificador único del componente
+            selectedValue = $(this).val();
+
+            alert('Se ha cambiado la selección de ' + fieldName + ':'+ selectedValue);
+    
+            // Enviar datos al servidor utilizando AJAX
+            $.ajax({
+                type: 'POST',
+                url: '/pc/',
+                data: {
+                    field_name: "tarjeta_madre",
+                    selected_value: selectedValue,
+                    csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val(),
+                },
+                success: function(data) {
+                    alert('Respuesta del servidor:', data);
+                }, 
+                error: function(xhr, status, error) {
+                    console.error('Error en la solicitud AJAX:', error);
+                }
+            });
+        });
+    
+        // Repite el proceso para los demás campos del formulario
+        // ...
+    
+        // Puedes agregar eventos adicionales según sea necesario
+    });
+    
+</script>
+
 
 
 <script>
@@ -96,8 +135,12 @@
     }
 
     .save-button {
-        margin-top: 20px; /* Ajusta según tus necesidades */
-    }
+        margin-top: 20px;
+        width: 100px; /* Ajusta según tus necesidades */
+        height: 30px; /* Ajusta según tus necesidades */
+        position: relative;
+        top: 400px;
+        right: 270px;
+    }
 </style>
-{{ precio_guardado }}
 {% endblock %}
