@@ -8,7 +8,14 @@
 <form id="complete-form" method="post" action="{% url 'armar_pc' %}" onsubmit="return handleFormSubmit()">
   {% csrf_token %}
 
+    <div class="title-container">
+        <h2>Componentes</h2>
+        <img src="../static/images/cpu2.webp" alt="Descripción de la imagen">
+    </div>
+
     <div class="form-container">
+     
+
         <div class="left-column">
             <!-- Campos del formulario de componentes -->
             <label style="font-family:'Brush Script MT', cursive; font-size: 28px;" for="{{ componentes_form.tarjeta_madre.id_for_label }}">Tarjeta madre</label>
@@ -66,31 +73,51 @@
     .form-container {
         display: flex;
         justify-content: space-between;
-        margin: 20px; /* Ajusta según tus necesidades */
+        margin: 20px;
+    }
+
+    .title-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 30px;
+        margin-top: 20px;
+        position: relative;
+        left: 85px;
+    }
+
+    .title-container h2 {
+        margin-right: 20px;
+    }
+
+    .title-container img {
+        
+        height: auto;
+        width: 75px;
+        height: 75px;
     }
 
     .left-column {
         position: relative;
         right: 150px;
-        width: 65%; /* Ajusta según tus necesidades */
+        width: 65%;
         box-sizing: border-box;
-        margin-right: 20px; /* Márgenes entre columnas */
+        margin-right: 20px;
     }
 
     .component-container {
         width: 100%;
         height: 10px;
         box-sizing: border-box;
-        margin-bottom: -100px;
+        margin-bottom: -100px; /* Ajusta según tus necesidades */
     }
 
     .right-column {
-        width: 45%; /* Ajusta según tus necesidades */
+        width: 45%;
         box-sizing: border-box;
     }
 
     .non-editable-container {
-        width: 100%; /* Hacemos que el contenedor ocupe todo el ancho disponible */
+        width: 100%;
         height: 25px;
         text-align: center;
         padding: 5px;
@@ -98,7 +125,6 @@
         box-sizing: border-box;
         display: inline-block;
     }
-
 
     .save-button {
         margin-top: 20px;
@@ -108,7 +134,11 @@
         top: 400px;
         right: 270px;
     }
-   
 </style>
+
+
+
 {{ precio_guardado }}
 {% endblock %}
+
+
