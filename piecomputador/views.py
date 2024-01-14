@@ -57,7 +57,7 @@ def armar_pc(request):
         precio_form = PrecioForm(request.POST)
         componentes_form = ComponentesForm(request.POST)
 
-        if precio_form.is_valid() and componentes_form.is_valid():
+        if precio_form.is_valid() :
             precio_entero = precio_form.cleaned_data['precio_form']
 
             # Lógica para actualizar gama_value
@@ -70,6 +70,7 @@ def armar_pc(request):
         else:
             # El formulario no es válido, puedes manejarlo según tus necesidades
             print("Formulario no válido")
+            precio_form = PrecioForm()  # Inicializa un nuevo formulario
     else:
         precio_form = PrecioForm()
         componentes_form = ComponentesForm()

@@ -3,6 +3,8 @@
 
 {% block content %}
 
+
+
 <form id="complete-form" method="post" action="{% url 'armar_pc' %}" onsubmit="return handleFormSubmit()">
   {% csrf_token %}
 
