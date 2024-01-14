@@ -1,6 +1,7 @@
 # En views.py
 from django.shortcuts import render, redirect
 from .models import Procesador, TarjetaMadre, Memoria, Grafica
+from .forms import PrecioForm, ComponentesForm
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.http import HttpResponse
@@ -8,6 +9,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.db import IntegrityError
 from .models import *
 from .forms import *
+from rest_framework import viewsets
 from django.urls import reverse_lazy
 from django.views.generic import View
 from django.views.generic import (
@@ -26,26 +28,64 @@ from piecomputador.models import (
     PC,
     Usuarios,
 )
-from rest_framework import viewsets
+
 
 
 def home(request):
     return render(request, "home.html")
 
 
-# componentes
-class ComponentsListView(ListView):
-    model = PC
-    template_name = "pc_list.html"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["procesadores"] = Procesador.objects.all()
-        context["tarjetas_madre"] = TarjetaMadre.objects.all()
-        context["memorias_ram"] = Memoria.objects.all()
-        context["tarjetas_graficas"] = Grafica.objects.all()
-        return context
+# Inicializar los componenetes
+class ComponentesForm(forms.Form):
+    tarjeta_madre = forms.ChoiceField(choices=[], required=False)
+    procesador = forms.ChoiceField(choices=[], required=False)
+    memoria_ram = forms.ChoiceField(choices=[], required=False)
+    tarjeta_grafica = forms.ChoiceField(choices=[], required=False)
 
+def armar_pc(request):
+    gama_value = "Baja"  # Valor inicial
+    precio_value = "0,0 $"
+
+    # Obtener las opciones para los componentes desde la base de datos
+    tarjetas_madre_choices = [(tm.id_mom, tm.nombre) for tm in TarjetaMadre.objects.all()]
+    procesadores_choices = [(proc.id_cpu, proc.nombre) for proc in Procesador.objects.all()]
+    memorias_ram_choices = [(ram.id_ram, ram.nombre) for ram in Memoria.objects.all()]
+    tarjetas_graficas_choices = [(gpu.id_gpu, gpu.nombre) for gpu in Grafica.objects.all()]
+
+    if request.method == "POST":
+        precio_form = PrecioForm(request.POST)
+        componentes_form = ComponentesForm(request.POST)
+
+        if precio_form.is_valid() and componentes_form.is_valid():
+            precio_entero = precio_form.cleaned_data['precio_form']
+
+            # Lógica para actualizar gama_value
+            if 1 <= precio_entero <= 5:
+                gama_value = 'Baja'
+            elif 6 <= precio_entero <= 10:
+                gama_value = 'Media'
+            else:
+                gama_value = 'Alta'
+        else:
+            # El formulario no es válido, puedes manejarlo según tus necesidades
+            print("Formulario no válido")
+    else:
+        precio_form = PrecioForm()
+        componentes_form = ComponentesForm()
+
+    # Inicializamos las opciones del formulario
+    componentes_form.fields['tarjeta_madre'].choices = tarjetas_madre_choices
+    componentes_form.fields['procesador'].choices = procesadores_choices
+    componentes_form.fields['memoria_ram'].choices = memorias_ram_choices
+    componentes_form.fields['tarjeta_grafica'].choices = tarjetas_graficas_choices
+
+    return render(request, "pc_list.html", {
+        "gama_value": gama_value,
+        "precio_value": precio_value,
+        "precio_form": precio_form,
+        "componentes_form": componentes_form,
+    })
 
 # # Armar pc
 # class ArmarPCView(View):
@@ -172,29 +212,6 @@ def signin(request):
 # vista que recibe el precio del formulario para implementar la logica del armado
 
 
-from django.shortcuts import render
 
-def armar_pc(request):
-    gama_value = "Baja"  # Valor inicial
-    precio_value = "0,0 $"
 
-    if request.method == "POST":
-        form = PrecioForm(request.POST)
-        if form.is_valid():
-            precio_entero = form.cleaned_data['precio_form']
-
-            # Lógica para actualizar gama_value
-            if 1 <= precio_entero <= 5:
-                gama_value = 'Baja'
-            elif 6 <= precio_entero <= 10:
-                gama_value = 'Media'
-            else:
-                gama_value = 'Alta'
-        else:
-            # El formulario no es válido, puedes manejarlo según tus necesidades
-            print("Formulario no válido")
-    else:
-        form = PrecioForm()
-
-    return render(request, "pc_list.html", {"gama_value": gama_value, "precio_value": precio_value,"form": form})
 

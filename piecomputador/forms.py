@@ -2,7 +2,8 @@
 
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import Usuarios
+from django.db.models.base import Model
+from .models import PC, Usuarios
 from django.contrib.auth.forms import AuthenticationForm
 
 
@@ -32,3 +33,9 @@ class CustomInicioSesionForm(AuthenticationForm):
 class PrecioForm(forms.Form):
     precio_form = forms.IntegerField()
     
+
+class ComponentesForm(forms.Form):
+    tarjeta_madre = forms.ChoiceField(choices=[], required=False)
+    procesador = forms.ChoiceField(choices=[], required=False)
+    memoria_ram = forms.ChoiceField(choices=[], required=False)
+    tarjeta_grafica = forms.ChoiceField(choices=[], required=False)
