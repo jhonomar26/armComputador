@@ -44,7 +44,7 @@ class ComponentesForm(forms.Form):
 
 
 def armar_pc(request):
-    gama_value = "Baja"  # Valor inicial
+    gama_value = "'Seleccione un precio'"  # Valor inicial
     precio_value = "0,0 $"
     valor = "Valor"
 
@@ -184,12 +184,26 @@ def armar_pc(request):
             # !Miro si cambio algun elemento en el formulario
             # Verificar si se ha cambiado la tarjeta madre
             field_name = request.POST.get("field_name")
-            selected_value = request.POST.get("selected_value")
-            if field_name == None:
-                gama_value="NONE"
-                
-            else:
-                gama_value = "Si estoy llegango solicitud pos"
+            selected_value = request.POST.get("selected_value") 
+
+
+            # Obtener el ID de la tarjeta madre seleccionada
+            #selected_tarjeta_madre_id = request.POST.get("selected_value")  # Cambiado a "selected_value"
+            #selected_tarjeta_madre_id = request.POST.get("selected_value")
+            # Imprime los datos en la consola del servidor
+            #print('Datos recibidos:', request.POST)
+
+            # id_tarjeta_madre = request.POST.get('id_tarjeta_madre', None)
+
+            # Aquí puedes hacer lo que necesites con el ID de la tarjeta madre
+            # print('ID de la tarjeta madre:', id_tarjeta_madre)
+            
+
+            # Ahora puedes usar selected_tarjeta_madre_id en tu lógica para recomendar otros componentes
+            # if id_tarjeta_madre == None:
+            #     gama_value = "NONE" 
+            # else:
+            #     gama_value = id_tarjeta_madre
 
         else:
             # El formulario no es válido, puedes manejarlo según tus necesidades
