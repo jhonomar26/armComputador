@@ -5,6 +5,7 @@
 
 {{valor}}
 
+<p>{{Prueba}}</p>  
 <form id="complete-form" method="post" action="{% url 'armar_pc' %}" onsubmit="return handleFormSubmit()">
   {% csrf_token %}
 
@@ -14,14 +15,14 @@
     </div>
 
     <div class="form-container">
-     
 
         <div class="left-column">
             <!-- Campos del formulario de componentes -->
             <label style="font-family:'Brush Script MT', cursive; font-size: 28px;" for="{{ componentes_form.tarjeta_madre.id_for_label }}">Tarjeta madre</label>
             <div class="component-container" style="width: 300px; height: 150px;">
                 {{ componentes_form.tarjeta_madre }}
-            </div>
+            </div> 
+            
 
             <label style="font-family:'Brush Script MT', cursive; font-size: 28px;" for="{{ componentes_form.procesador.id_for_label }}">Procesador</label>
             <div class="component-container" style="width: 300px; height: 150px;">
@@ -53,17 +54,17 @@
             <br />
             <br />
         </div>
-<<<<<<< HEAD
+{% comment %} <<<<<<< HEAD {% endcomment %}
         <input type="submit" value="Guardar" class="save-button">
     </div>
 
-=======
+{% comment %} ======= {% endcomment %}
 
         <input type="submit" value="Guardar" class="save-button">
     </div>
    
  
->>>>>>> 9bc003bf94b76f2d71ea3583137bdc0f3e50acc0
+{% comment %} >>>>>>> 9bc003bf94b76f2d71ea3583137bdc0f3e50acc0 {% endcomment %}
 </form>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
@@ -73,8 +74,8 @@
         $('#id_tarjeta_madre').change(function() {
             fieldName = "tarjeta_madre";  // Identificador único del componente
             selectedValue = $(this).val();
-
-            alert('Se ha cambiado la selección de ' + fieldName + ':'+ selectedValue);
+            $('#miFormulario').submit(); // Envía el formulario cuando cambie el valor de la tarjeta madre
+            {% comment %} alert('Se ha cambiado la selección de ' + fieldName + ':'+ selectedValue); {% endcomment %}
     
             // Enviar datos al servidor utilizando AJAX
             $.ajax({

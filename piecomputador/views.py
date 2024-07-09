@@ -47,6 +47,7 @@ def armar_pc(request):
     gama_value = "Baja"  # Valor inicial
     precio_value = "0,0 $"
     valor = "Valor"
+    tarjetaMadre="Hola"
 
     # Obtener las opciones para los componentes desde la base de datos
     tarjetas_madre_choices = [
@@ -63,9 +64,9 @@ def armar_pc(request):
         (gpu.id_gpu, f"{gpu.nombre} - ${gpu.precio}") for gpu in Grafica.objects.all()
     ]
 
+    componentes_form = ComponentesForm(request.POST)
     if request.method == "POST":
         precio_form = PrecioForm(request.POST)
-        componentes_form = ComponentesForm(request.POST)
 
         if precio_form.is_valid():
             precio_entero = precio_form.cleaned_data["precio_form"]
@@ -180,20 +181,24 @@ def armar_pc(request):
                 componentes_form.fields[
                     "tarjeta_grafica"
                 ].choices = tarjetas_graficas_choices
+                
+                tarjetaMadre = request.POST.get('tarjeta_madre')
+                
+                
 
             # !Miro si cambio algun elemento en el formulario
             # Verificar si se ha cambiado la tarjeta madre
-            field_name = request.POST.get("field_name")
-            selected_value = request.POST.get("selected_value")
-            if field_name == None:
-                gama_value="NONE"
-                
-            else:
-                gama_value = "Si estoy llegango solicitud pos"
-
+            # PROBLEMA
+            # field_name = request.POST.get("selected_value")
+            # selected_value = request.POST.get("selected_value")
+            # if field_name == None:
+            #     gama_value="NONE"
+            # else:
+            #     gama_value = "Si e"
         else:
             # El formulario no es válido, puedes manejarlo según tus necesidades
             precio_form = PrecioForm()  # Inicializa un nuevo formulario
+            # if request.GET[]
     else:
         precio_form = PrecioForm()
         componentes_form = ComponentesForm()
@@ -212,6 +217,7 @@ def armar_pc(request):
             "precio_value": precio_value,
             "precio_form": precio_form,
             "componentes_form": componentes_form,
+            "Prueba":tarjetaMadre
         },
     )
 
