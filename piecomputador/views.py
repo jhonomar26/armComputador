@@ -44,10 +44,10 @@ class ComponentesForm(forms.Form):
 
 
 def armar_pc(request):
-    gama_value = "Baja"  # Valor inicial
+    gama_value = "'Seleccione un precio'"  # Valor inicial
     precio_value = "0,0 $"
     valor = "Valor"
-    tarjetaMadre="Hola"
+    tarjetaMadre = "Hola"
 
     # Obtener las opciones para los componentes desde la base de datos
     tarjetas_madre_choices = [
@@ -79,9 +79,9 @@ def armar_pc(request):
                     (tm.id_mom, f"{tm.nombre} - {tm.precio}$")
                     for tm in (TarjetaMadre.objects.filter(gama="Baja"))
                 ]
-                componentes_form.fields[
-                    "tarjeta_madre"
-                ].choices = tarjetas_madre_choices
+                componentes_form.fields["tarjeta_madre"].choices = (
+                    tarjetas_madre_choices
+                )
 
                 # Filtra los procesadores de gama baja
                 procesadores_gama_baja = Procesador.objects.filter(gama="Baja")
@@ -105,9 +105,9 @@ def armar_pc(request):
                     (gpu.id_gpu, f"{gpu.nombre} - {gpu.precio}$")
                     for gpu in tarjetas_graficas_gama_baja
                 ]
-                componentes_form.fields[
-                    "tarjeta_grafica"
-                ].choices = tarjetas_graficas_choices
+                componentes_form.fields["tarjeta_grafica"].choices = (
+                    tarjetas_graficas_choices
+                )
 
             elif 6 <= precio_entero <= 10:
                 gama_value = "Media"
@@ -116,9 +116,9 @@ def armar_pc(request):
                     (tm.id_mom, f"{tm.nombre} - {tm.precio}$")
                     for tm in (TarjetaMadre.objects.filter(gama="Media"))
                 ]
-                componentes_form.fields[
-                    "tarjeta_madre"
-                ].choices = tarjetas_madre_choices
+                componentes_form.fields["tarjeta_madre"].choices = (
+                    tarjetas_madre_choices
+                )
 
                 # Filtra los procesadores de gama Media
                 procesadores_gama_Media = Procesador.objects.filter(gama="Media")
@@ -142,9 +142,9 @@ def armar_pc(request):
                     (gpu.id_gpu, f"{gpu.nombre} - {gpu.precio}$")
                     for gpu in tarjetas_graficas_gama_Media
                 ]
-                componentes_form.fields[
-                    "tarjeta_grafica"
-                ].choices = tarjetas_graficas_choices
+                componentes_form.fields["tarjeta_grafica"].choices = (
+                    tarjetas_graficas_choices
+                )
             else:
                 gama_value = "Alta"
                 # Tarje
@@ -152,9 +152,9 @@ def armar_pc(request):
                     (tm.id_mom, f"{tm.nombre} - {tm.precio}$")
                     for tm in (TarjetaMadre.objects.filter(gama="Alta"))
                 ]
-                componentes_form.fields[
-                    "tarjeta_madre"
-                ].choices = tarjetas_madre_choices
+                componentes_form.fields["tarjeta_madre"].choices = (
+                    tarjetas_madre_choices
+                )
 
                 # Filtra los procesadores de gama Alta
                 procesadores_gama_Alta = Procesador.objects.filter(gama="Alta")
@@ -178,13 +178,11 @@ def armar_pc(request):
                     (gpu.id_gpu, f"{gpu.nombre} - {gpu.precio}$")
                     for gpu in tarjetas_graficas_gama_Alta
                 ]
-                componentes_form.fields[
-                    "tarjeta_grafica"
-                ].choices = tarjetas_graficas_choices
-                
-                tarjetaMadre = request.POST.get('tarjeta_madre')
-                
-                
+                componentes_form.fields["tarjeta_grafica"].choices = (
+                    tarjetas_graficas_choices
+                )
+
+                tarjetaMadre = request.POST.get("tarjeta_madre")
 
             # !Miro si cambio algun elemento en el formulario
             # Verificar si se ha cambiado la tarjeta madre
@@ -217,7 +215,7 @@ def armar_pc(request):
             "precio_value": precio_value,
             "precio_form": precio_form,
             "componentes_form": componentes_form,
-            "Prueba":tarjetaMadre
+            "Prueba": tarjetaMadre,
         },
     )
 
